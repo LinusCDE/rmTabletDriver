@@ -1,0 +1,3 @@
+[submodule "rmWacomToMouse"]
+	path = rmWacomToMouse
+	url = git@github.com:LinusCDE/rmWacomToMouse.git
