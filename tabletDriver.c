@@ -1,3 +1,7 @@
+/*
+ * Does the same as tableDriver.py !
+ */
+
 // Custom device:
 #include <fcntl.h>
 #include <linux/uinput.h>
