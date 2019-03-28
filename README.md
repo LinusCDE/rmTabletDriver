@@ -51,3 +51,14 @@ To apply the changes reboot your computer.
 ## Tablet not working with evdev xinput driver
 
 Create a file called `/etc/X11/xorg.conf.d/10-evdev.conf` and add [this content](https://gist.github.com/Leonidas-from-XIV/4306072).
+
+
+# Enabling the Tablet in GIMP
+
+In order to work in GIMP, the device must get enabled under `Edit -> Input devices`.
+
+
+# Credits
+
+Huge thanks to benthor's [HuionKamvasGT191LinuxDriver](https://github.com/benthor/HuionKamvasGT191LinuxDriver) (found 
+[here](https://docs.krita.org/en/reference_manual/list_supported_tablets.html)) as it gave me the final hint on how to get the driver to work with Krita!
