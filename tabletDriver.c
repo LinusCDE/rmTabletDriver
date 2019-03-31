@@ -54,7 +54,10 @@ void addAbsCapability(int fd, int code, int32_t value, int32_t min, int32_t max,
    abs_setup.code = code;
    abs_setup.absinfo = abs_info;
 
-   ioctl(fd, UI_ABS_SETUP, &abs_setup); // Set abs data
+   if(ioctl(fd, UI_ABS_SETUP, &abs_setup) < 0) { // Set abs data
+      perror("Failed to absolute info to uinput-device (old kernel?)");
+      exit(1);
+   }
 }
 
 int main(int argc, char** argv)
@@ -83,14 +86,14 @@ int main(int argc, char** argv)
 
    // See https://python-evdev.readthedocs.io/en/latest/apidoc.html#evdev.device.AbsInfo.resolution
    // Resolution = max(20967, 15725) / (21*10)  # Height of display is 21cm. Format is units/mm. => ca. 100 (99.84285714285714)
-   // Tilt resolution = 12400 / ((math.pi / 180) * 140 (max angle)) (Format: units/radian) => ca. 5074 (5074.769042587292)
+   // Tilt resolution = 12600 / ((math.pi / 180) * 140 (max angle)) (Format: units/radian) => ca. 5074 (5074.769042587292)
    ioctl(fd, UI_SET_EVBIT, EV_ABS);
-   addAbsCapability(fd, ABS_PRESSURE, /*Value:*/ 0, /*Min:*/ 0, /*Max:*/ 4095,  /*Resolution:*/ 0,    /*Fuzz:*/ 0, /*Flat:*/ 0   );
-   addAbsCapability(fd, ABS_DISTANCE, /*Value:*/ 0, /*Min:*/ 0, /*Max:*/ 110,   /*Resolution:*/ 0,    /*Fuzz:*/ 0, /*Flat:*/ 0   );
-   addAbsCapability(fd, ABS_TILT_X,   /*Value:*/ 0, /*Min:*/ 0, /*Max:*/ 12400, /*Resolution:*/ 5074, /*Fuzz:*/ 0, /*Flat:*/ 6200);
-   addAbsCapability(fd, ABS_TILT_Y,   /*Value:*/ 0, /*Min:*/ 0, /*Max:*/ 12400, /*Resolution:*/ 5074, /*Fuzz:*/ 0, /*Flat:*/ 6200);
-   addAbsCapability(fd, ABS_X,        /*Value:*/ 0, /*Min:*/ 0, /*Max:*/ 20967, /*Resolution:*/ 100,  /*Fuzz:*/ 0, /*Flat:*/ 0   );
-   addAbsCapability(fd, ABS_Y,        /*Value:*/ 0, /*Min:*/ 0, /*Max:*/ 15725, /*Resolution:*/ 100,  /*Fuzz:*/ 0, /*Flat:*/ 0   );
+   addAbsCapability(fd, ABS_PRESSURE, /*Value:*/ 0,     /*Min:*/ 0,     /*Max:*/ 4095,  /*Resolution:*/ 0,   /*Fuzz:*/ 0, /*Flat:*/ 0);
+   addAbsCapability(fd, ABS_DISTANCE, /*Value:*/ 95,    /*Min:*/ 0,     /*Max:*/ 255,   /*Resolution:*/ 0,   /*Fuzz:*/ 0, /*Flat:*/ 0);
+   addAbsCapability(fd, ABS_TILT_X,   /*Value:*/ 0,     /*Min:*/ -9000, /*Max:*/ 9000, /*Resolution:*/ 5074, /*Fuzz:*/ 0, /*Flat:*/ 0);
+   addAbsCapability(fd, ABS_TILT_Y,   /*Value:*/ 0,     /*Min:*/ -9000, /*Max:*/ 9000, /*Resolution:*/ 5074, /*Fuzz:*/ 0, /*Flat:*/ 0);
+   addAbsCapability(fd, ABS_X,        /*Value:*/ 11344, /*Min:*/ 0,     /*Max:*/ 20967, /*Resolution:*/ 100, /*Fuzz:*/ 0, /*Flat:*/ 0);
+   addAbsCapability(fd, ABS_Y,        /*Value:*/ 10471, /*Min:*/ 0,     /*Max:*/ 15725, /*Resolution:*/ 100, /*Fuzz:*/ 0, /*Flat:*/ 0);
 
    struct uinput_setup usetup;
    memset(&usetup, 0, sizeof(usetup));
@@ -99,9 +102,15 @@ int main(int argc, char** argv)
    //usetup.id.product = 0x7890; /* sample product */
    usetup.id.version = 0x3;
    strcpy(usetup.name, "reMarkableTablet-FakePen");  // Has to end with "pen" to work in Krita!!!
-   ioctl(fd, UI_DEV_SETUP, &usetup);
-
-   ioctl(fd, UI_DEV_CREATE);
+   if(ioctl(fd, UI_DEV_SETUP, &usetup) < 0) {
+      perror("Failed to setup uinput-device (old kernel?)");
+      return 1;
+   }
+   
+   if(ioctl(fd, UI_DEV_CREATE) < 0) {
+      perror("Failed to create uinput-device");
+      return 1;
+   }
 
    void closeDevice() {
       ioctl(fd, UI_DEV_DESTROY);

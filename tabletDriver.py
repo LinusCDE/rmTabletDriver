@@ -40,17 +40,18 @@ client.connect((('10.11.99.1' if len(argv) == 1 else argv[1]), 33333))
 # BTN_TOOL_PEN == 1 means that the pen is hovering over the tablet
 # BTN_TOUCH == 1 means that the pen is touching the tablet
 
-# This WONT'T WORK with libinput since the resolution is never actually set.
+# This WONT'T WORK with libinput since the resolution is never actually set
+# and pydev uses an old method for creating the uinput-device which can't set the resolution.
 # This is fixed in the c-version but doesn't quite work yet, too.
 capabilities = {
 	ecodes.EV_KEY: [ecodes.BTN_TOOL_PEN, ecodes.BTN_TOUCH],
 	EV_ABS: [
 		(WACOM_EVCODE_PRESSURE, AbsInfo(value=0, min=0, max=4095, fuzz=0, flat=0, resolution=0)),
-		(WACOM_EVCODE_DISTANCE, AbsInfo(value=0, min=0, max=110, fuzz=0, flat=0, resolution=0)),
-		(WACOM_EVCODE_XTILT, AbsInfo(value=0, min=0, max=12400, fuzz=0, flat=6200, resolution=5074)),
-		(WACOM_EVCODE_YTILT, AbsInfo(value=0, min=0, max=12400, fuzz=0, flat=6200, resolution=5074)),
-		(WACOM_EVCODE_XPOS, AbsInfo(value=0, min=0, max=WACOM_HEIGHT, fuzz=0, flat=0, resolution=100)),
-		(WACOM_EVCODE_YPOS, AbsInfo(value=0, min=0, max=WACOM_WIDTH, fuzz=0, flat=0, resolution=100))
+		(WACOM_EVCODE_DISTANCE, AbsInfo(value=95, min=0, max=255, fuzz=0, flat=0, resolution=0)),
+		(WACOM_EVCODE_XTILT, AbsInfo(value=0, min=-9000, max=9000, fuzz=0, flat=0, resolution=5074)),
+		(WACOM_EVCODE_YTILT, AbsInfo(value=0, min=-9000, max=9000, fuzz=0, flat=0, resolution=5074)),
+		(WACOM_EVCODE_XPOS, AbsInfo(value=11344, min=0, max=WACOM_HEIGHT, fuzz=0, flat=0, resolution=100)),
+		(WACOM_EVCODE_YPOS, AbsInfo(value=10471, min=0, max=WACOM_WIDTH, fuzz=0, flat=0, resolution=100))
 	]
 }
 

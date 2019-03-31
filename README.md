@@ -58,6 +58,14 @@ Create a file called `/etc/X11/xorg.conf.d/10-evdev.conf` and add [this content]
 In order to work in GIMP, the device must get enabled under `Edit -> Input devices`.
 
 
+# Calibrating
+
+It also is a good idea to calibrate the tablet using xinput_calibrator because the tablet screen will be streched to match your screen. That will result in a wrong aspect ratio.
+
+When calibration using xinput_calibrator use the pdf, open it on the reMarkable and touch the points there.
+
+(I essentially just recorded the calibration screen, took a screenshot, changed the colors, added borders, and created a pdf from it.)
+
 # Credits
 
 Huge thanks to benthor's [HuionKamvasGT191LinuxDriver](https://github.com/benthor/HuionKamvasGT191LinuxDriver) (found 
