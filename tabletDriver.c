@@ -1,5 +1,6 @@
 /*
  * Does the same as tableDriver.py !
+ * Requires linux 4.5 rc1 or higher.
  */
 
 // Custom device:

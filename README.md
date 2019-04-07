@@ -17,7 +17,7 @@ When developing on my laptop (which used the libinput driver) I encountered two 
 - It was missing a stylus button
 - There was no resolution found (which was given in tabletDriver.py)
 
-It turned out, that the pydev library wasn't able to send the resolution (probably using an old way for setting abs info).
+It turned out, that the pydev library wasn't able to send the resolution (probably using an old way for setting abs info). This is fixed as of version 1.2.0.
 
 Thus the tabletDriver.c was created. Doing the same but having the ability to specify resolution (can be seen with the `evtest` command).
 
