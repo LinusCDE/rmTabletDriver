@@ -40,9 +40,8 @@ client.connect((('10.11.99.1' if len(argv) == 1 else argv[1]), 33333))
 # BTN_TOOL_PEN == 1 means that the pen is hovering over the tablet
 # BTN_TOUCH == 1 means that the pen is touching the tablet
 
-# This WONT'T WORK with libinput since the resolution is never actually set
-# and pydev uses an old method for creating the uinput-device which can't set the resolution.
-# This is fixed in the c-version but doesn't quite work yet, too.
+# In order to recognize the resolution, evdev has to be at least 1.2.0 ($ pip3 install -U evdev)
+# For older versions use the c implementation (tabletDriver.c) (which requires at least kernel 4.5 rc1)
 capabilities = {
 	ecodes.EV_KEY: [ecodes.BTN_TOOL_PEN, ecodes.BTN_TOUCH],
 	EV_ABS: [
