@@ -1,5 +1,7 @@
 # rmTabletDriver
 
+[![Mentioned in Awesome reMarkable](https://awesome.re/mentioned-badge.svg)](https://github.com/reHackable/awesome-reMarkable)
+
 This userspace driver for linux is able to simulate the real tablet input from your reMarkable Paper Tablet on your Linux PC (or VM).
 
 There are two files. `tabletDriver.c` and `tabletDriver.py`. They both do the same thing. Choose as you wish.
